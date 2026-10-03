@@ -1,0 +1,6 @@
+{
+  "name": "ApexSMM - Production SMM Panel",
+  "description": "Production-ready Social Media Marketing (SMM) Panel built with Plain PHP, MySQL, Tailwind CSS 4, Alpine.js, GSAP, and ApexCharts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
