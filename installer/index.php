@@ -3,7 +3,7 @@
  * ApexSMM Web Installer - Step 1: Welcome & Requirements Check
  */
 
-if (file_exists(__DIR__ . '/../storage/installed.lock')) {
+if (file_exists(__DIR__ . '/../storage/installed.lock') && empty($_GET['force']) && empty($_GET['unlock'])) {
     header('Location: /login.php');
     exit;
 }

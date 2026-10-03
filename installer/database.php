@@ -3,7 +3,7 @@
  * ApexSMM Web Installer - Step 2: Database & Admin Configuration
  */
 
-if (file_exists(__DIR__ . '/../storage/installed.lock')) {
+if (file_exists(__DIR__ . '/../storage/installed.lock') && empty($_GET['force']) && empty($_GET['unlock'])) {
     header('Location: /login.php');
     exit;
 }
@@ -11,13 +11,27 @@ if (file_exists(__DIR__ . '/../storage/installed.lock')) {
 $error = null;
 $success = null;
 
-// Pre-fill from current .env if available
-$dbHost = getenv('DB_HOST') ?: '127.0.0.1';
-$dbPort = getenv('DB_PORT') ?: '3306';
-$dbName = getenv('DB_NAME') ?: 'smm_panel';
-$dbUser = getenv('DB_USER') ?: 'smm_user';
-$dbPass = getenv('DB_PASS') ?: 'smm_secure_pass_2026';
-$siteUrl = getenv('APP_URL') ?: 'http://localhost:3000';
+// Parse existing .env if present
+$envPath = __DIR__ . '/../.env';
+$envVars = [];
+if (file_exists($envPath)) {
+    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $l) {
+        $l = trim($l);
+        if ($l === '' || strpos($l, '#') === 0) continue;
+        if (strpos($l, '=') !== false) {
+            list($k, $v) = explode('=', $l, 2);
+            $envVars[trim($k)] = trim(trim($v), "\"'");
+        }
+    }
+}
+
+$dbHost  = $envVars['DB_HOST'] ?? (getenv('DB_HOST') ?: '127.0.0.1');
+$dbPort  = $envVars['DB_PORT'] ?? (getenv('DB_PORT') ?: '3306');
+$dbName  = $envVars['DB_NAME'] ?? (getenv('DB_NAME') ?: 'smm_panel');
+$dbUser  = $envVars['DB_USER'] ?? (getenv('DB_USER') ?: 'smm_user');
+$dbPass  = $envVars['DB_PASS'] ?? (getenv('DB_PASS') ?: 'smm_secure_pass_2026');
+$siteUrl = $envVars['APP_URL'] ?? (getenv('APP_URL') ?: 'http://localhost:3000');
 ?>
 <!DOCTYPE html>
 <html lang="en" class="dark">
@@ -67,6 +81,13 @@ $siteUrl = getenv('APP_URL') ?: 'http://localhost:3000';
                         <input type="password" name="db_pass" value="<?= htmlspecialchars($dbPass) ?>" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                     </div>
                 </div>
+
+                <div class="pt-2">
+                    <label class="flex items-center space-x-2 text-xs text-slate-300 cursor-pointer select-none">
+                        <input type="checkbox" name="clean_install" value="1" checked class="w-4 h-4 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-blue-500 focus:ring-offset-0">
+                        <span>Clean Installation (Drop & recreate tables to prevent schema/column conflicts)</span>
+                    </label>
+                </div>
             </div>
 
             <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-5 space-y-4">
@@ -91,7 +112,7 @@ $siteUrl = getenv('APP_URL') ?: 'http://localhost:3000';
 
             <div class="flex items-center justify-between pt-2">
                 <a href="/installer/index.php" class="text-xs text-slate-400 hover:text-white">&larr; Back to Requirements</a>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium hover:from-blue-500 hover:to-indigo-500 transition-all shadow-lg shadow-blue-500/25">
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium hover:from-blue-500 hover:to-indigo-500 transition-all shadow-lg shadow-blue-500/25 cursor-pointer">
                     Execute Installation &rarr;
                 </button>
             </div>

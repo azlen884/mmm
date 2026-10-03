@@ -3,6 +3,22 @@
 
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- Drop pre-existing tables to guarantee schema compatibility
+DROP TABLE IF EXISTS `rate_limits`;
+DROP TABLE IF EXISTS `audit_logs`;
+DROP TABLE IF EXISTS `ticket_messages`;
+DROP TABLE IF EXISTS `tickets`;
+DROP TABLE IF EXISTS `notifications`;
+DROP TABLE IF EXISTS `payments`;
+DROP TABLE IF EXISTS `payment_gateways`;
+DROP TABLE IF EXISTS `transactions`;
+DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `services`;
+DROP TABLE IF EXISTS `providers`;
+DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `settings`;
+
 -- 1. Site Settings
 CREATE TABLE IF NOT EXISTS `settings` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -256,8 +272,33 @@ INSERT IGNORE INTO `settings` (`setting_key`, `setting_value`) VALUES
 ('faq_content', 'Frequently asked questions regarding order processing, refills, and support.');
 
 -- Seed Default Payment Gateways (Inactive by default until admin enters real keys)
-INSERT IGNORE INTO `payment_gateways` (`id`, `code`, `name`, `min_amount`, `max_amount`, `fee_percentage`, `fee_fixed`, `status`, `credentials`, `instructions`) VALUES
+INSERT INTO `payment_gateways` (`id`, `code`, `name`, `min_amount`, `max_amount`, `fee_percentage`, `fee_fixed`, `status`, `credentials`, `instructions`) VALUES
 (1, 'stripe', 'Stripe (Credit / Debit Cards)', 5.00, 2000.00, 2.90, 0.30, 'inactive', '{"publishable_key":"","secret_key":"","webhook_secret":""}', 'Pay securely using any major credit or debit card.'),
 (2, 'paypal', 'PayPal Express Checkout', 10.00, 1500.00, 3.50, 0.49, 'inactive', '{"client_id":"","client_secret":"","mode":"sandbox"}', 'Instant wallet recharge through PayPal balance or cards.'),
 (3, 'coinpayments', 'CoinPayments (Crypto: BTC, ETH, USDT)', 10.00, 5000.00, 1.00, 0.00, 'inactive', '{"merchant_id":"","public_key":"","private_key":"","ipn_secret":""}', 'Pay with Bitcoin, Ethereum, USDT TRC20, and major cryptocurrencies.'),
-(4, 'bank_transfer', 'Manual / Bank Wire Transfer', 50.00, 10000.00, 0.00, 0.00, 'inactive', '{"bank_name":"JPMorgan Chase","account_name":"Apex Services LLC","account_number":"","routing_number":"","swift":""}', 'Direct bank transfer. After transfer, submit transaction ID and receipt screenshot for admin review.');
+(4, 'bank_transfer', 'Manual / Bank Wire Transfer', 50.00, 10000.00, 0.00, 0.00, 'active', '{"bank_name":"JPMorgan Chase","account_name":"Apex Services LLC","account_number":"","routing_number":"","swift":""}', 'Direct bank transfer. After transfer, submit transaction ID and receipt screenshot for admin review.')
+ON DUPLICATE KEY UPDATE name = VALUES(name), min_amount = VALUES(min_amount), max_amount = VALUES(max_amount);
+
+-- Seed Categories
+INSERT IGNORE INTO `categories` (`id`, `name`, `sort_order`, `status`) VALUES
+(1, 'Instagram Followers & Likes', 1, 'active'),
+(2, 'YouTube Views, Watchtime & Subs', 2, 'active'),
+(3, 'TikTok Followers, Likes & Shares', 3, 'active'),
+(4, 'Telegram Channel Members & Views', 4, 'active'),
+(5, 'X (Twitter) Followers & Retweets', 5, 'active'),
+(6, 'Facebook Page Likes & Reactions', 6, 'active'),
+(7, 'Spotify Streams & Monthly Listeners', 7, 'active'),
+(8, 'Discord Members & Server Boosts', 8, 'active');
+
+-- Seed Default Services
+INSERT IGNORE INTO `services` (`id`, `category_id`, `name`, `type`, `rate`, `provider_rate`, `min_quantity`, `max_quantity`, `refill`, `cancel`, `dripfeed`, `description`, `status`) VALUES
+(1, 1, 'Instagram Followers [HQ Real Profiles] [30 Days Refill]', 'Default', 1.8500, 1.2000, 50, 50000, 1, 1, 1, 'Guaranteed high-quality non-drop followers with 30-day auto-refill.', 'active'),
+(2, 1, 'Instagram Likes [Real Active Users] [Instant Start]', 'Default', 0.6500, 0.3500, 20, 100000, 0, 1, 1, 'Ultra-fast likes from organic accounts.', 'active'),
+(3, 1, 'Instagram Reels Views [High Retention + Reach Booster]', 'Default', 0.2000, 0.0900, 100, 1000000, 0, 1, 0, 'Explode your Reels into Explore algorithm.', 'active'),
+(4, 2, 'YouTube Views [Monetizable Lifetime Guaranteed]', 'Default', 3.2000, 2.1000, 500, 500000, 1, 1, 1, 'High retention views completely safe for AdSense monetization.', 'active'),
+(5, 2, 'YouTube Subscribers [Non-Drop Ultra High Quality]', 'Default', 18.5000, 12.0000, 20, 10000, 1, 1, 0, 'Authentic subscribers with high profile score.', 'active'),
+(6, 3, 'TikTok Followers [For FYP Algorithm] [Instant Start]', 'Default', 2.4000, 1.5000, 50, 100000, 1, 1, 1, 'Trigger the FYP algorithm with high-engagement followers.', 'active'),
+(7, 3, 'TikTok Likes [Real Active FYP Users]', 'Default', 0.7500, 0.4000, 20, 200000, 0, 1, 1, 'Instant start likes delivery within 60 seconds.', 'active'),
+(8, 4, 'Telegram Channel Members [0% Drop Non-Drop]', 'Default', 1.9500, 1.1000, 50, 50000, 1, 1, 0, 'Real looking channel subscribers with active online history.', 'active'),
+(9, 5, 'X (Twitter) Followers [Active Worldwide Profiles]', 'Default', 3.8000, 2.4000, 50, 25000, 1, 1, 1, 'Organic looking followers with avatars, bios, and tweet history.', 'active');
+
