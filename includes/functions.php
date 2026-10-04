@@ -5,6 +5,7 @@
 
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/session.php';
+require_once __DIR__ . '/icons.php';
 
 function get_setting(string $key, string $default = ''): string
 {
@@ -118,31 +119,31 @@ function status_badge(string $status): string
 {
     $status = strtolower($status);
     $map = [
-        'completed'      => 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-        'active'         => 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-        'success'        => 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-        'processing'     => 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-        'in_progress'    => 'bg-sky-500/10 text-sky-400 border-sky-500/20',
-        'pending'        => 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-        'open'           => 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-        'customer_reply' => 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
-        'answered'       => 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
-        'partial'        => 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-        'cancelled'      => 'bg-rose-500/10 text-rose-400 border-rose-500/20',
-        'canceled'       => 'bg-rose-500/10 text-rose-400 border-rose-500/20',
-        'refunded'       => 'bg-teal-500/10 text-teal-400 border-teal-500/20',
-        'failed'         => 'bg-red-500/10 text-red-400 border-red-500/20',
-        'closed'         => 'bg-slate-500/10 text-slate-400 border-slate-500/20',
-        'inactive'       => 'bg-slate-500/10 text-slate-400 border-slate-500/20',
-        'banned'         => 'bg-red-500/10 text-red-400 border-red-500/20',
-        'suspended'      => 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
+        'completed'      => 'bg-emerald-50 text-emerald-700 border border-emerald-200/80',
+        'active'         => 'bg-emerald-50 text-emerald-700 border border-emerald-200/80',
+        'success'        => 'bg-emerald-50 text-emerald-700 border border-emerald-200/80',
+        'processing'     => 'bg-purple-50 text-purple-700 border border-purple-200/80',
+        'in_progress'    => 'bg-purple-50 text-purple-700 border border-purple-200/80',
+        'pending'        => 'bg-amber-50 text-amber-700 border border-amber-200/80',
+        'open'           => 'bg-amber-50 text-amber-700 border border-amber-200/80',
+        'customer_reply' => 'bg-blue-50 text-blue-700 border border-blue-200/80',
+        'answered'       => 'bg-purple-50 text-purple-700 border border-purple-200/80',
+        'partial'        => 'bg-purple-50 text-purple-700 border border-purple-200/80',
+        'cancelled'      => 'bg-rose-50 text-rose-700 border border-rose-200/80',
+        'canceled'       => 'bg-rose-50 text-rose-700 border border-rose-200/80',
+        'refunded'       => 'bg-teal-50 text-teal-700 border border-teal-200/80',
+        'failed'         => 'bg-rose-50 text-rose-700 border border-rose-200/80',
+        'closed'         => 'bg-zinc-100 text-zinc-600 border border-zinc-200',
+        'inactive'       => 'bg-zinc-100 text-zinc-600 border border-zinc-200',
+        'banned'         => 'bg-rose-50 text-rose-700 border border-rose-200/80',
+        'suspended'      => 'bg-amber-50 text-amber-700 border border-amber-200/80',
     ];
 
-    $classes = $map[$status] ?? 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+    $classes = $map[$status] ?? 'bg-zinc-100 text-zinc-600 border border-zinc-200';
     $label = ucwords(str_replace('_', ' ', $status));
 
     return sprintf(
-        '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border %s">%s</span>',
+        '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold %s">%s</span>',
         $classes,
         htmlspecialchars($label, ENT_QUOTES, 'UTF-8')
     );

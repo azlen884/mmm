@@ -7,9 +7,12 @@ export default defineConfig({
     outDir: 'assets',
     emptyOutDir: false,
     rollupOptions: {
-      input: 'src/main.js',
+      input: {
+        app: 'src/main.js',
+        charts: 'src/charts.js',
+      },
       output: {
-        entryFileNames: 'js/app.js',
+        entryFileNames: 'js/[name].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
             return 'css/app.css';

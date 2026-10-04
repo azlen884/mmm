@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM User - New Order Page
+ * White + Premium Purple Design System
  */
 
 require_once __DIR__ . '/../includes/config.php';
@@ -57,7 +58,7 @@ $pageTitle = 'Place New Order | ' . get_setting('site_name', 'ApexSMM');
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div class="max-w-4xl mx-auto py-4 sm:py-6" 
+<div class="max-w-4xl mx-auto py-2 sm:py-4" 
      x-data="{
          categories: <?= htmlspecialchars(json_encode($categories), ENT_QUOTES, 'UTF-8') ?>,
          servicesMap: <?= htmlspecialchars(json_encode($servicesByCategory), ENT_QUOTES, 'UTF-8') ?>,
@@ -93,44 +94,42 @@ require_once __DIR__ . '/includes/header.php';
          }
      }">
 
-    <div class="mb-8">
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Place New Order</h1>
-        <p class="text-sm text-slate-400 mt-1">Select a verified service package, provide target URL, and submit for automated dispatch.</p>
+    <div class="mb-6">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">Place New Order</h1>
+        <p class="text-xs sm:text-sm text-zinc-500 mt-1">Select a verified service package, provide target URL, and submit for automated dispatch.</p>
     </div>
 
     <?php if ($error): ?>
-        <div class="mb-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-center space-x-3 shadow-lg">
-            <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <span><?= e($error) ?></span>
+        <div class="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center space-x-3 shadow-xs">
+            <div class="shrink-0 text-rose-600">
+                <?= icon('exclamation-circle', 'w-5 h-5') ?>
+            </div>
+            <span class="font-medium text-xs sm:text-sm"><?= e($error) ?></span>
         </div>
     <?php endif; ?>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         <!-- Order Form Column -->
         <div class="lg:col-span-2">
-            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl">
+            <div class="bg-white border border-purple-100 rounded-3xl p-6 sm:p-8 shadow-xs">
                 
                 <?php if (empty($categories) || empty($allServices)): ?>
                     <div class="py-12 text-center">
-                        <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mx-auto mb-3 text-slate-400">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                            </svg>
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-3 text-purple-600">
+                            <?= icon('inbox', 'w-6 h-6') ?>
                         </div>
-                        <h4 class="text-base font-bold text-white mb-1">No services available</h4>
-                        <p class="text-xs text-slate-400">The service catalog has no active items. Please check back later.</p>
+                        <h4 class="text-base font-bold text-zinc-900 mb-1">No services available</h4>
+                        <p class="text-xs text-zinc-500">The service catalog has no active items. Please check back later.</p>
                     </div>
                 <?php else: ?>
-                    <form action="/user/new-order.php" method="POST" class="space-y-6">
+                    <form action="/user/new-order.php" method="POST" class="space-y-5">
                         <?= csrf_field() ?>
 
                         <!-- Category Select -->
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Category</label>
-                            <select x-model="selectedCategory" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">Category</label>
+                            <select x-model="selectedCategory" class="w-full bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-colors">
                                 <template x-for="cat in categories" :key="cat.id">
                                     <option :value="cat.id" x-text="cat.name"></option>
                                 </template>
@@ -139,8 +138,8 @@ require_once __DIR__ . '/includes/header.php';
 
                         <!-- Service Select -->
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Service</label>
-                            <select name="service_id" x-model="selectedServiceId" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">Service</label>
+                            <select name="service_id" x-model="selectedServiceId" required class="w-full bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-colors">
                                 <template x-for="s in currentServices" :key="s.id">
                                     <option :value="s.id" x-text="s.name + ' - $' + s.rate.toFixed(4) + ' / 1k'"></option>
                                 </template>
@@ -149,43 +148,49 @@ require_once __DIR__ . '/includes/header.php';
 
                         <!-- Target Link -->
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Target Link / URL</label>
-                            <input type="text" name="link" x-model="link" required placeholder="https://instagram.com/username or video URL"
-                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">Target Link / URL</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+                                    <?= icon('link', 'w-4 h-4') ?>
+                                </div>
+                                <input type="text" name="link" x-model="link" required placeholder="https://instagram.com/username or video link"
+                                    class="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-colors">
+                            </div>
                         </div>
 
                         <!-- Quantity -->
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Quantity</label>
-                                <span class="text-xs text-slate-500" x-show="activeService">
-                                    Min: <span class="font-mono text-slate-300" x-text="activeService ? activeService.min : 0"></span> | 
-                                    Max: <span class="font-mono text-slate-300" x-text="activeService ? activeService.max : 0"></span>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500">Quantity</label>
+                                <span class="text-xs text-zinc-500" x-show="activeService">
+                                    Min: <span class="font-mono text-zinc-700 font-semibold" x-text="activeService ? activeService.min : 0"></span> | 
+                                    Max: <span class="font-mono text-zinc-700 font-semibold" x-text="activeService ? activeService.max : 0"></span>
                                 </span>
                             </div>
                             <input type="number" name="quantity" x-model.number="quantity" required
                                 :min="activeService ? activeService.min : 1"
                                 :max="activeService ? activeService.max : 1000000"
                                 placeholder="Enter order quantity..."
-                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors font-mono">
+                                class="w-full bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-colors font-mono">
                         </div>
 
                         <!-- Total Charge Display -->
-                        <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-between">
+                        <div class="p-4 rounded-2xl bg-purple-50/70 border border-purple-100 flex items-center justify-between">
                             <div>
-                                <div class="text-xs text-slate-400">Total Charge:</div>
-                                <div class="text-2xl font-black text-emerald-400 font-mono">
+                                <div class="text-xs text-zinc-500 font-medium">Estimated Charge:</div>
+                                <div class="text-2xl font-black text-purple-700 font-mono">
                                     $ <span x-text="calculatedCharge">0.0000</span>
                                 </div>
                             </div>
-                            <div class="text-right text-xs text-slate-400">
+                            <div class="text-right text-xs text-zinc-500">
                                 <div>Your Balance:</div>
-                                <div class="font-mono font-bold text-white"><?= format_currency($user['balance']) ?></div>
+                                <div class="font-mono font-bold text-zinc-900"><?= format_currency((float)$user['balance']) ?></div>
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold text-base shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.01] transition-all">
-                            Submit Order &rarr;
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-purple-600 text-white font-bold text-sm shadow-xs shadow-purple-600/25 hover:bg-purple-700 transition-all flex items-center justify-center space-x-2 cursor-pointer">
+                            <?= icon('plus', 'w-4 h-4') ?>
+                            <span>Submit Order</span>
                         </button>
                     </form>
                 <?php endif; ?>
@@ -195,48 +200,51 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- Service Information Card -->
         <div class="lg:col-span-1">
-            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl space-y-6">
-                <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wider">Service Specifications</h3>
+            <div class="bg-white border border-purple-100 rounded-3xl p-6 shadow-xs space-y-5">
+                <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider flex items-center space-x-2">
+                    <?= icon('information-circle', 'w-4 h-4 text-purple-600') ?>
+                    <span>Service Specifications</span>
+                </h3>
                 
                 <template x-if="activeService">
                     <div class="space-y-4">
                         <div>
-                            <div class="text-xs text-slate-500 mb-1">Service Title</div>
-                            <div class="text-sm font-semibold text-white" x-text="activeService.name"></div>
+                            <div class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold mb-1">Service Title</div>
+                            <div class="text-xs font-semibold text-zinc-900 leading-snug" x-text="activeService.name"></div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                                <div class="text-[11px] text-slate-500">Rate / 1k</div>
-                                <div class="text-sm font-mono font-bold text-emerald-400" x-text="'$' + activeService.rate.toFixed(4)"></div>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div class="p-3 rounded-xl bg-zinc-50 border border-zinc-100">
+                                <div class="text-[10px] text-zinc-400 uppercase font-semibold">Rate / 1k</div>
+                                <div class="text-xs font-mono font-bold text-purple-700" x-text="'$' + activeService.rate.toFixed(4)"></div>
                             </div>
-                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                                <div class="text-[11px] text-slate-500">Min / Max</div>
-                                <div class="text-sm font-mono font-bold text-slate-300" x-text="activeService.min + ' / ' + activeService.max"></div>
+                            <div class="p-3 rounded-xl bg-zinc-50 border border-zinc-100">
+                                <div class="text-[10px] text-zinc-400 uppercase font-semibold">Min / Max</div>
+                                <div class="text-xs font-mono font-bold text-zinc-700" x-text="activeService.min + ' / ' + activeService.max"></div>
                             </div>
                         </div>
 
                         <div>
-                            <div class="text-xs text-slate-500 mb-2">Enabled Features</div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2.5 py-1 text-xs rounded-lg font-medium"
-                                      :class="activeService.refill ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-500'">
+                            <div class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold mb-2">Features</div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2 py-0.5 text-[11px] rounded-lg font-semibold"
+                                      :class="activeService.refill ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-zinc-100 text-zinc-400 border border-zinc-200'">
                                     Refill Guarantee
                                 </span>
-                                <span class="px-2.5 py-1 text-xs rounded-lg font-medium"
-                                      :class="activeService.cancel ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'bg-slate-800 text-slate-500'">
+                                <span class="px-2 py-0.5 text-[11px] rounded-lg font-semibold"
+                                      :class="activeService.cancel ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-zinc-100 text-zinc-400 border border-zinc-200'">
                                     Cancel Allowed
                                 </span>
-                                <span class="px-2.5 py-1 text-xs rounded-lg font-medium"
-                                      :class="activeService.dripfeed ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'bg-slate-800 text-slate-500'">
+                                <span class="px-2 py-0.5 text-[11px] rounded-lg font-semibold"
+                                      :class="activeService.dripfeed ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-zinc-100 text-zinc-400 border border-zinc-200'">
                                     Drip-feed
                                 </span>
                             </div>
                         </div>
 
                         <div>
-                            <div class="text-xs text-slate-500 mb-1">Description & Guidelines</div>
-                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 leading-relaxed max-h-48 overflow-y-auto"
+                            <div class="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold mb-1">Description & Guidelines</div>
+                            <div class="p-3 rounded-xl bg-zinc-50 border border-zinc-100 text-xs text-zinc-600 leading-relaxed max-h-48 overflow-y-auto"
                                  x-text="activeService.description || 'No special requirements noted for this service.'">
                             </div>
                         </div>
@@ -244,7 +252,7 @@ require_once __DIR__ . '/includes/header.php';
                 </template>
 
                 <template x-if="!activeService">
-                    <p class="text-xs text-slate-500">Select a category and service to preview parameters.</p>
+                    <p class="text-xs text-zinc-400">Select a category and service to preview parameters.</p>
                 </template>
             </div>
         </div>

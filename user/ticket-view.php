@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM User - Ticket Conversation Thread
+ * White + Premium Purple Design System
  */
 
 require_once __DIR__ . '/../includes/config.php';
@@ -61,16 +62,19 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="max-w-3xl mx-auto space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 gsap-fade-in">
         <div>
-            <div class="flex items-center space-x-2 text-xs text-slate-400 mb-1">
-                <a href="/user/tickets.php" class="hover:text-white">&larr; Back to Tickets</a>
+            <div class="flex items-center space-x-1.5 text-xs text-zinc-500 mb-1">
+                <a href="/user/tickets.php" class="inline-flex items-center space-x-1 text-purple-700 hover:text-purple-800 font-medium">
+                    <?= icon('chevron-left', 'w-3.5 h-3.5') ?>
+                    <span>Back to Tickets</span>
+                </a>
             </div>
-            <h1 class="text-2xl font-bold text-white tracking-tight"><?= e($ticket['subject']) ?></h1>
-            <div class="flex items-center space-x-3 text-xs text-slate-400 mt-1">
-                <span>Category: <strong class="text-slate-300 uppercase"><?= e($ticket['category']) ?></strong></span>
+            <h1 class="text-2xl font-bold text-zinc-900 tracking-tight"><?= e($ticket['subject']) ?></h1>
+            <div class="flex items-center space-x-3 text-xs text-zinc-500 mt-1">
+                <span>Category: <strong class="text-zinc-700 uppercase font-semibold"><?= e($ticket['category']) ?></strong></span>
                 <span>&bull;</span>
-                <span>Priority: <strong class="text-slate-300 uppercase"><?= e($ticket['priority']) ?></strong></span>
+                <span>Priority: <strong class="text-zinc-700 uppercase font-semibold"><?= e($ticket['priority']) ?></strong></span>
             </div>
         </div>
         <div class="flex items-center space-x-3">
@@ -79,8 +83,9 @@ require_once __DIR__ . '/includes/header.php';
                 <form action="/user/ticket-view.php?id=<?= (int)$ticket['id'] ?>" method="POST" onsubmit="return confirm('Mark this ticket as closed?');">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="close">
-                    <button type="submit" class="px-3 py-1 rounded-lg bg-slate-800 text-slate-400 hover:text-white text-xs border border-slate-700">
-                        Close Ticket
+                    <button type="submit" class="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-white border border-zinc-200 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 text-xs font-semibold shadow-2xs transition-colors">
+                        <?= icon('x-mark', 'w-3.5 h-3.5 text-zinc-400') ?>
+                        <span>Close Ticket</span>
                     </button>
                 </form>
             <?php endif; ?>
@@ -88,42 +93,41 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 
     <?php if ($error): ?>
-        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs">
-            <?= e($error) ?>
+        <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center space-x-2">
+            <?= icon('exclamation-circle', 'w-4 h-4 text-rose-600 shrink-0') ?>
+            <span><?= e($error) ?></span>
         </div>
     <?php endif; ?>
 
     <!-- Message Timeline -->
-    <div class="space-y-4">
+    <div class="space-y-4 gsap-card">
         <?php foreach ($messages as $msg): 
             $isAdminMsg = (bool)$msg['is_admin'];
         ?>
-            <div class="p-6 rounded-3xl border <?= $isAdminMsg ? 'bg-blue-950/20 border-blue-500/30' : 'bg-slate-900/80 border-slate-800' ?> backdrop-blur-xl space-y-3">
+            <div class="p-6 rounded-2xl border <?= $isAdminMsg ? 'bg-purple-50/40 border-purple-200/80 shadow-xs' : 'bg-white border-zinc-200/80 shadow-xs' ?> space-y-3">
                 <div class="flex items-center justify-between text-xs">
                     <div class="flex items-center space-x-2">
-                        <div class="w-6 h-6 rounded-full flex items-center justify-center font-bold text-[10px] <?= $isAdminMsg ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300' ?>">
+                        <div class="w-6 h-6 rounded-full flex items-center justify-center font-bold text-[10px] <?= $isAdminMsg ? 'bg-purple-600 text-white' : 'bg-zinc-200 text-zinc-700' ?>">
                             <?= $isAdminMsg ? 'S' : substr($msg['username'], 0, 1) ?>
                         </div>
-                        <span class="font-bold <?= $isAdminMsg ? 'text-blue-400' : 'text-white' ?>">
+                        <span class="font-bold <?= $isAdminMsg ? 'text-purple-900' : 'text-zinc-900' ?>">
                             <?= $isAdminMsg ? 'Support Team' : e($msg['username']) ?>
                         </span>
                         <?php if ($isAdminMsg): ?>
-                            <span class="px-2 py-0.2 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-semibold">Staff</span>
+                            <span class="px-2 py-0.5 rounded bg-purple-100 text-purple-700 border border-purple-200 text-[10px] font-semibold">Staff</span>
                         <?php endif; ?>
                     </div>
-                    <span class="text-slate-500"><?= format_date($msg['created_at']) ?></span>
+                    <span class="text-zinc-400 text-[11px]"><?= format_date($msg['created_at']) ?></span>
                 </div>
 
-                <div class="text-sm text-slate-300 whitespace-pre-line leading-relaxed">
+                <div class="text-xs text-zinc-700 whitespace-pre-line leading-relaxed">
                     <?= e($msg['message']) ?>
                 </div>
 
                 <?php if (!empty($msg['attachment'])): ?>
-                    <div class="pt-2 border-t border-slate-800/80">
-                        <a href="/storage/uploads/<?= e($msg['attachment']) ?>" target="_blank" class="inline-flex items-center space-x-1.5 text-xs text-blue-400 hover:text-blue-300 font-mono">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-                            </svg>
+                    <div class="pt-2 border-t border-zinc-100">
+                        <a href="/storage/uploads/<?= e($msg['attachment']) ?>" target="_blank" class="inline-flex items-center space-x-1.5 text-xs text-purple-700 hover:text-purple-800 font-mono">
+                            <?= icon('arrow-down-tray', 'w-4 h-4') ?>
                             <span>Attachment: <?= e($msg['attachment']) ?></span>
                         </a>
                     </div>
@@ -134,8 +138,8 @@ require_once __DIR__ . '/includes/header.php';
 
     <!-- Reply Form -->
     <?php if ($ticket['status'] !== 'closed'): ?>
-        <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl shadow-xl space-y-4">
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Post Response</h3>
+        <div class="bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-xs space-y-4 gsap-card">
+            <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider">Post Response</h3>
             
             <form action="/user/ticket-view.php?id=<?= (int)$ticket['id'] ?>" method="POST" enctype="multipart/form-data" class="space-y-4">
                 <?= csrf_field() ?>
@@ -143,20 +147,21 @@ require_once __DIR__ . '/includes/header.php';
 
                 <div>
                     <textarea name="message" rows="4" required placeholder="Type your reply here..."
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"></textarea>
+                        class="w-full bg-white border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"></textarea>
                 </div>
 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <input type="file" name="attachment" accept=".jpg,.jpeg,.png,.webp,.pdf,.txt,.zip"
-                        class="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-300 hover:file:bg-slate-700">
-                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-xs hover:from-blue-500 hover:to-indigo-500 shadow-md shadow-blue-500/25">
-                        Send Reply &rarr;
+                        class="text-xs text-zinc-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                    <button type="submit" class="inline-flex items-center space-x-1.5 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs shadow-xs transition-all">
+                        <?= icon('check', 'w-3.5 h-3.5') ?>
+                        <span>Send Reply</span>
                     </button>
                 </div>
             </form>
         </div>
     <?php else: ?>
-        <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 text-center text-xs text-slate-500">
+        <div class="p-6 rounded-2xl bg-zinc-50 border border-zinc-200 text-center text-xs text-zinc-500">
             This ticket has been marked as closed. You can open a new ticket from the support desk if you require further assistance.
         </div>
     <?php endif; ?>

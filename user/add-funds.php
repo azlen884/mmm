@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM User - Wallet Deposit & Add Funds
+ * White + Premium Purple Design System
  */
 
 require_once __DIR__ . '/../includes/config.php';
@@ -15,7 +16,7 @@ Auth::requireLogin();
 $user = Auth::user();
 $userId = (int)$user['id'];
 
-// Query only active payment gateways (Section 23: Never show fake or unconfigured gateways)
+// Query only active payment gateways
 $gateways = PaymentManager::getActiveGateways();
 
 $error = null;
@@ -27,7 +28,7 @@ if (isset($_GET['status']) && isset($_GET['tx'])) {
     $payment = Database::fetchOne("SELECT * FROM payments WHERE transaction_id = ? AND user_id = ?", [$tx, $userId]);
     if ($payment) {
         if ($payment['status'] === 'completed') {
-            $notice = "Payment confirmed! Your wallet has been credited with " . format_currency($payment['amount']) . ".";
+            $notice = "Payment confirmed! Your wallet has been credited with " . format_currency((float)$payment['amount']) . ".";
         } elseif ($payment['status'] === 'pending') {
             $notice = "Your deposit invoice #{$tx} is awaiting provider confirmation. Your balance will update automatically upon verification.";
         } elseif ($payment['status'] === 'cancelled') {
@@ -69,7 +70,7 @@ $pageTitle = 'Add Funds | ' . get_setting('site_name', 'ApexSMM');
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div class="max-w-4xl mx-auto space-y-8"
+<div class="max-w-4xl mx-auto space-y-6"
      x-data="{
          gateways: <?= htmlspecialchars(json_encode($gateways), ENT_QUOTES, 'UTF-8') ?>,
          selectedCode: '<?= !empty($gateways) ? $gateways[0]['code'] : '' ?>',
@@ -93,60 +94,58 @@ require_once __DIR__ . '/includes/header.php';
      }">
 
     <div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Deposit Account Balance</h1>
-        <p class="text-sm text-slate-400 mt-1">Recharge your wallet through our encrypted payment processors.</p>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">Deposit Funds</h1>
+        <p class="text-xs sm:text-sm text-zinc-500 mt-1">Recharge your wallet through our encrypted payment processors.</p>
     </div>
 
     <?php if ($notice): ?>
-        <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-center space-x-3 shadow-lg">
-            <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
+        <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-center space-x-3 shadow-xs">
+            <div class="shrink-0 text-emerald-600">
+                <?= icon('check-circle', 'w-5 h-5') ?>
+            </div>
             <span><?= e($notice) ?></span>
         </div>
     <?php endif; ?>
 
     <?php if ($error): ?>
-        <div class="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-center space-x-3 shadow-lg">
-            <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
+        <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-center space-x-3 shadow-xs">
+            <div class="shrink-0 text-rose-600">
+                <?= icon('exclamation-circle', 'w-5 h-5') ?>
+            </div>
             <span><?= e($error) ?></span>
         </div>
     <?php endif; ?>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         <!-- Payment Deposit Form -->
         <div class="lg:col-span-2">
-            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl">
+            <div class="bg-white border border-purple-100 rounded-3xl p-6 sm:p-8 shadow-xs">
                 
                 <?php if (empty($gateways)): ?>
                     <div class="py-12 text-center">
-                        <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mx-auto mb-3 text-slate-400">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                            </svg>
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-3 text-purple-600">
+                            <?= icon('wallet', 'w-6 h-6') ?>
                         </div>
-                        <h4 class="text-base font-bold text-white mb-1">No payment gateways available</h4>
-                        <p class="text-xs text-slate-400">The administrator has not activated any payment processors yet. Please check back shortly.</p>
+                        <h4 class="text-base font-bold text-zinc-900 mb-1">No payment gateways available</h4>
+                        <p class="text-xs text-zinc-500">The administrator has not activated any payment processors yet. Please check back shortly.</p>
                     </div>
                 <?php else: ?>
-                    <form action="/user/add-funds.php" method="POST" class="space-y-6">
+                    <form action="/user/add-funds.php" method="POST" class="space-y-5">
                         <?= csrf_field() ?>
 
                         <!-- Gateway Selector -->
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Payment Method</label>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2.5">Payment Method</label>
                             <div class="space-y-2">
                                 <template x-for="g in gateways" :key="g.code">
-                                    <label class="flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all"
-                                           :class="selectedCode === g.code ? 'bg-blue-600/10 border-blue-500/50 text-white' : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'">
+                                    <label class="flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all select-none"
+                                           :class="selectedCode === g.code ? 'bg-purple-50/70 border-purple-300 text-purple-900 ring-1 ring-purple-600/30' : 'bg-white border-zinc-200 text-zinc-700 hover:border-purple-200'">
                                         <div class="flex items-center space-x-3">
-                                            <input type="radio" name="gateway" :value="g.code" x-model="selectedCode" class="text-blue-600 focus:ring-0">
-                                            <span class="font-medium text-sm" x-text="g.name"></span>
+                                            <input type="radio" name="gateway" :value="g.code" x-model="selectedCode" class="text-purple-600 focus:ring-0">
+                                            <span class="font-semibold text-xs sm:text-sm" x-text="g.name"></span>
                                         </div>
-                                        <span class="text-xs font-mono text-slate-400" x-text="'$' + parseFloat(g.min_amount).toFixed(2) + ' - $' + parseFloat(g.max_amount).toFixed(2)"></span>
+                                        <span class="text-xs font-mono text-zinc-400 font-medium" x-text="'$' + parseFloat(g.min_amount).toFixed(2) + ' - $' + parseFloat(g.max_amount).toFixed(2)"></span>
                                     </label>
                                 </template>
                             </div>
@@ -155,37 +154,43 @@ require_once __DIR__ . '/includes/header.php';
                         <!-- Amount Input -->
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Deposit Amount (USD)</label>
-                                <span class="text-xs text-slate-500" x-show="activeGateway">
-                                    Min: $<span x-text="activeGateway ? parseFloat(activeGateway.min_amount).toFixed(2) : 0"></span> | 
-                                    Max: $<span x-text="activeGateway ? parseFloat(activeGateway.max_amount).toFixed(2) : 0"></span>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500">Deposit Amount (USD)</label>
+                                <span class="text-xs text-zinc-500" x-show="activeGateway">
+                                    Min: $<span class="font-semibold text-zinc-700 font-mono" x-text="activeGateway ? parseFloat(activeGateway.min_amount).toFixed(2) : 0"></span> | 
+                                    Max: $<span class="font-semibold text-zinc-700 font-mono" x-text="activeGateway ? parseFloat(activeGateway.max_amount).toFixed(2) : 0"></span>
                                 </span>
                             </div>
-                            <input type="number" step="0.01" name="amount" x-model.number="amount" required
-                                :min="activeGateway ? activeGateway.min_amount : 1"
-                                :max="activeGateway ? activeGateway.max_amount : 10000"
-                                placeholder="Enter amount in USD..."
-                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors font-mono">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+                                    <span class="font-bold text-sm">$</span>
+                                </div>
+                                <input type="number" step="0.01" name="amount" x-model.number="amount" required
+                                    :min="activeGateway ? activeGateway.min_amount : 1"
+                                    :max="activeGateway ? activeGateway.max_amount : 10000"
+                                    placeholder="0.00"
+                                    class="w-full bg-white border border-zinc-200 rounded-xl pl-8 pr-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-colors font-mono">
+                            </div>
                         </div>
 
                         <!-- Invoice Calculation Box -->
-                        <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 space-y-2 text-xs">
-                            <div class="flex justify-between text-slate-400">
+                        <div class="p-4 rounded-2xl bg-purple-50/70 border border-purple-100 space-y-2 text-xs">
+                            <div class="flex justify-between text-zinc-600">
                                 <span>Deposit Credit:</span>
-                                <span class="font-mono text-white">$ <span x-text="amount ? parseFloat(amount).toFixed(2) : '0.00'"></span></span>
+                                <span class="font-mono font-semibold text-zinc-900">$ <span x-text="amount ? parseFloat(amount).toFixed(2) : '0.00'"></span></span>
                             </div>
-                            <div class="flex justify-between text-slate-400">
+                            <div class="flex justify-between text-zinc-600">
                                 <span>Processor Fee:</span>
-                                <span class="font-mono text-slate-300">$ <span x-text="calculatedFee">0.00</span></span>
+                                <span class="font-mono text-zinc-700">$ <span x-text="calculatedFee">0.00</span></span>
                             </div>
-                            <div class="border-t border-slate-800 pt-2 flex justify-between font-bold text-sm">
-                                <span class="text-slate-200">Total Payable:</span>
-                                <span class="font-mono text-emerald-400">$ <span x-text="netPayable">0.00</span></span>
+                            <div class="border-t border-purple-200/60 pt-2 flex justify-between font-bold text-sm">
+                                <span class="text-zinc-900">Total Payable:</span>
+                                <span class="font-mono text-purple-700">$ <span x-text="netPayable">0.00</span></span>
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold text-base shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.01] transition-all">
-                            Proceed to Checkout &rarr;
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-purple-600 text-white font-bold text-sm shadow-xs shadow-purple-600/25 hover:bg-purple-700 transition-all flex items-center justify-center space-x-2 cursor-pointer">
+                            <?= icon('credit-card', 'w-4 h-4') ?>
+                            <span>Proceed to Checkout</span>
                         </button>
                     </form>
                 <?php endif; ?>
@@ -195,23 +200,24 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- Instructions Sidebar Card -->
         <div class="lg:col-span-1">
-            <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl space-y-4">
-                <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wider">Gateway Instructions</h3>
+            <div class="bg-white border border-purple-100 rounded-3xl p-6 shadow-xs space-y-4">
+                <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider flex items-center space-x-1.5">
+                    <?= icon('information-circle', 'w-4 h-4 text-purple-600') ?>
+                    <span>Gateway Instructions</span>
+                </h3>
                 
                 <template x-if="activeGateway && activeGateway.instructions">
-                    <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs text-slate-300 leading-relaxed"
+                    <div class="p-4 rounded-2xl bg-purple-50/50 border border-purple-100 text-xs text-zinc-600 leading-relaxed"
                          x-text="activeGateway.instructions">
                     </div>
                 </template>
 
-                <div class="space-y-3 text-xs text-slate-400 pt-2">
-                    <div class="flex items-center space-x-2 text-emerald-400">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                        </svg>
-                        <span>Verified 256-bit SSL Gateway Security</span>
+                <div class="space-y-3 text-xs text-zinc-500 pt-2">
+                    <div class="flex items-center space-x-2 text-emerald-700 font-semibold">
+                        <?= icon('shield-check', 'w-4 h-4 text-emerald-600') ?>
+                        <span>256-bit Encrypted Checkout</span>
                     </div>
-                    <p>
+                    <p class="leading-relaxed">
                         Wallets are automatically credited upon cryptographically verified IPN or Webhook execution.
                     </p>
                 </div>
@@ -221,13 +227,13 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 
     <!-- Recent Payments History -->
-    <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl">
-        <h3 class="text-base font-bold text-white mb-4">Recent Deposit Invoices</h3>
+    <div class="bg-white border border-purple-100 rounded-3xl p-6 shadow-xs">
+        <h3 class="text-base font-bold text-zinc-900 mb-4">Recent Deposit Invoices</h3>
         
         <?php if (!empty($recentPayments)): ?>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="text-xs uppercase text-slate-400 border-b border-slate-800 pb-3">
+                <table class="w-full text-left text-sm text-zinc-600">
+                    <thead class="bg-zinc-50/70 text-xs uppercase font-bold text-zinc-400 border-b border-zinc-100">
                         <tr>
                             <th class="py-3 px-4">Transaction ID</th>
                             <th class="py-3 px-4">Gateway</th>
@@ -237,22 +243,22 @@ require_once __DIR__ . '/includes/header.php';
                             <th class="py-3 px-4 text-right">Date</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800/60">
+                    <tbody class="divide-y divide-zinc-100">
                         <?php foreach ($recentPayments as $p): ?>
-                            <tr class="hover:bg-slate-800/30 transition-colors">
-                                <td class="py-3 px-4 font-mono text-xs text-slate-300"><?= e($p['transaction_id']) ?></td>
-                                <td class="py-3 px-4 uppercase text-xs font-semibold text-white"><?= e($p['gateway']) ?></td>
-                                <td class="py-3 px-4 font-mono font-bold text-emerald-400"><?= format_currency($p['amount']) ?></td>
-                                <td class="py-3 px-4 font-mono text-xs text-slate-400"><?= format_currency($p['fee']) ?></td>
+                            <tr class="hover:bg-purple-50/30 transition-colors">
+                                <td class="py-3 px-4 font-mono text-xs font-bold text-zinc-900"><?= e($p['transaction_id']) ?></td>
+                                <td class="py-3 px-4 uppercase text-xs font-semibold text-purple-700"><?= e($p['gateway']) ?></td>
+                                <td class="py-3 px-4 font-mono font-bold text-purple-700"><?= format_currency((float)$p['amount']) ?></td>
+                                <td class="py-3 px-4 font-mono text-xs text-zinc-500"><?= format_currency((float)$p['fee']) ?></td>
                                 <td class="py-3 px-4 text-center"><?= status_badge($p['status']) ?></td>
-                                <td class="py-3 px-4 text-xs text-slate-400 text-right"><?= format_date($p['created_at']) ?></td>
+                                <td class="py-3 px-4 text-xs text-zinc-400 text-right"><?= format_date($p['created_at']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         <?php else: ?>
-            <div class="py-8 text-center border border-dashed border-slate-800 rounded-2xl text-xs text-slate-500">
+            <div class="py-8 text-center border border-dashed border-purple-100 rounded-2xl text-xs text-zinc-400">
                 No deposit history found.
             </div>
         <?php endif; ?>

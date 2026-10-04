@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM Admin - Service Synchronization Manager
+ * White + Premium Purple Design System
  */
 
 require_once __DIR__ . '/../includes/config.php';
@@ -86,44 +87,51 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="max-w-3xl mx-auto space-y-6">
-    <div>
-        <div class="text-xs text-slate-400 mb-1">
-            <a href="/admin/services.php" class="hover:text-white">&larr; Back to Services</a>
+    <div class="gsap-fade-in">
+        <div class="text-xs text-zinc-500 mb-1">
+            <a href="/admin/services.php" class="inline-flex items-center space-x-1 text-purple-700 hover:text-purple-800 font-medium">
+                <?= icon('chevron-left', 'w-3.5 h-3.5') ?>
+                <span>Back to Services</span>
+            </a>
         </div>
-        <h1 class="text-2xl font-bold text-white tracking-tight">Synchronize Provider Services</h1>
-        <p class="text-xs text-slate-400 mt-1">Updates upstream costs, boundaries, and availability without altering your customized retail markups.</p>
+        <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">Synchronize Provider Services</h1>
+        <p class="text-xs text-zinc-500 mt-1">Updates upstream costs, boundaries, and availability without altering your customized retail markups.</p>
     </div>
 
     <?php if ($error): ?>
-        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs">
-            <?= e($error) ?>
+        <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center space-x-2">
+            <?= icon('exclamation-circle', 'w-4 h-4 text-rose-600 shrink-0') ?>
+            <span><?= e($error) ?></span>
         </div>
     <?php endif; ?>
 
-    <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl">
+    <div class="bg-white border border-zinc-200/80 rounded-2xl p-6 sm:p-7 shadow-xs gsap-card">
         <form action="/admin/service-sync.php" method="POST" class="space-y-4">
             <?= csrf_field() ?>
 
             <div>
-                <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Select Active Provider</label>
-                <select name="provider_id" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white">
+                <label class="block text-xs font-semibold uppercase text-zinc-600 mb-1.5">Select Active Provider</label>
+                <select name="provider_id" required class="w-full bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
                     <option value="">Choose provider...</option>
                     <?php foreach ($providers as $p): ?>
                         <option value="<?= (int)$p['id'] ?>">
-                            <?= e($p['name']) ?> (Last synced: <?= time_ago($p['last_sync_at']) ?>)
+                            <?= e($p['name']) ?> (Last Sync: <?= $p['last_sync_at'] ? time_ago($p['last_sync_at']) : 'Never' ?>)
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
 
-            <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs text-slate-400 space-y-2">
-                <div class="text-white font-semibold">Strict Separation Guarantee:</div>
-                <p>Provider Rate, Provider Min, and Provider Status will be refreshed from upstream API. Your customized Selling Rates and Active retail states will remain 100% intact.</p>
+            <div class="p-4 rounded-xl bg-purple-50/50 border border-purple-100 text-xs text-purple-900 space-y-1">
+                <span class="font-bold block">Safe Sync Policy:</span>
+                <p class="text-zinc-600 leading-relaxed">
+                    This synchronization updates the provider cost and boundary requirements in your database. It will NEVER overwrite your retail selling prices or custom descriptions.
+                </p>
             </div>
 
-            <div class="pt-2 flex justify-end">
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-purple-600 text-white font-semibold text-xs hover:bg-purple-500 shadow-md shadow-purple-500/20">
-                    Run Sync &rarr;
+            <div class="pt-4 flex justify-end border-t border-zinc-100">
+                <button type="submit" class="inline-flex items-center space-x-1.5 px-6 py-2.5 rounded-xl bg-purple-600 text-white font-semibold text-xs hover:bg-purple-700 shadow-xs transition-colors">
+                    <?= icon('arrow-path', 'w-3.5 h-3.5') ?>
+                    <span>Start Synchronization</span>
                 </button>
             </div>
         </form>

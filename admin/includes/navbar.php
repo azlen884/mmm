@@ -1,45 +1,53 @@
 <?php
 /**
  * ApexSMM Admin Navbar Component
+ * White + Premium Purple Design System
  */
 $maintenance = (get_setting('maintenance_mode', '0') === '1');
 ?>
-<header class="h-18 bg-[#080c14]/80 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+<header class="h-16 bg-white/95 backdrop-blur-md border-b border-purple-100/80 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-xs">
     
     <!-- Mobile Hamburger Toggle -->
     <div class="flex items-center space-x-3 lg:hidden">
-        <button @click="sidebarOpen = true" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+        <button @click="sidebarOpen = true" type="button" class="p-2 rounded-xl text-zinc-600 hover:text-purple-600 hover:bg-purple-50 transition-colors focus:outline-none" aria-label="Open Sidebar">
+            <?= icon('bars-3', 'w-6 h-6') ?>
         </button>
-        <span class="text-sm font-bold text-white"><?= e($siteName) ?> Staff</span>
+        <span class="text-sm font-bold text-zinc-900"><?= e($siteName) ?> Staff</span>
     </div>
 
     <!-- Breadcrumb -->
     <div class="hidden lg:flex items-center space-x-2 text-xs">
-        <span class="text-slate-400">Administration</span>
-        <span class="text-slate-600">/</span>
-        <span class="font-semibold text-purple-300"><?= e(ucwords(str_replace('_', ' ', $activeNav))) ?></span>
+        <span class="text-zinc-400 font-medium">Administration</span>
+        <span class="text-zinc-300">/</span>
+        <span class="font-semibold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-md border border-purple-100">
+            <?= e(ucwords(str_replace('_', ' ', $activeNav))) ?>
+        </span>
     </div>
 
     <!-- Right Controls -->
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center space-x-3.5">
         
         <?php if ($maintenance): ?>
-            <span class="px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-400 text-xs font-bold animate-pulse">
-                MAINTENANCE MODE ACTIVE
+            <span class="px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold inline-flex items-center space-x-1.5 animate-pulse">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+                <span>Maintenance Mode</span>
             </span>
         <?php endif; ?>
 
+        <!-- Switch to Client Portal -->
+        <a href="/user/dashboard.php" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 text-xs font-medium hover:bg-purple-100/80 transition-colors shadow-2xs">
+            <?= icon('user', 'w-3.5 h-3.5 text-purple-600') ?>
+            <span>User View</span>
+        </a>
+
         <!-- Admin Profile -->
-        <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-bold text-xs text-white uppercase">
+        <div class="flex items-center space-x-2.5 pl-2">
+            <div class="w-8 h-8 rounded-xl bg-purple-600 flex items-center justify-center font-bold text-xs text-white uppercase shadow-xs">
                 A
             </div>
             <div class="hidden md:block text-left text-xs">
-                <div class="font-bold text-white"><?= e($admin['username']) ?></div>
-                <div class="text-[10px] text-purple-400 font-medium uppercase">Super Administrator</div>
+                <div class="font-bold text-zinc-900"><?= e($admin['username']) ?></div>
+                <div class="text-[10px] text-purple-600 font-medium uppercase tracking-wider">Super Administrator</div>
             </div>
         </div>
 

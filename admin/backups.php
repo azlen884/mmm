@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM Admin - Database Backup Manager
+ * White + Premium Purple Design System
  */
 
 require_once __DIR__ . '/../includes/config.php';
@@ -106,52 +107,66 @@ require_once __DIR__ . '/includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-white tracking-tight">Database Backups</h1>
-            <p class="text-xs text-slate-400 mt-1">Export full MySQL snapshots for offline storage and disaster recovery.</p>
+            <h1 class="text-2xl font-bold text-[#18181B] tracking-tight">Database Backups</h1>
+            <p class="text-xs text-[#71717A] mt-1">Export full MySQL snapshots for offline storage and disaster recovery.</p>
         </div>
         <form action="/admin/backups.php" method="POST">
             <?= csrf_field() ?>
             <input type="hidden" name="action" value="create_backup">
-            <button type="submit" class="px-5 py-2.5 rounded-xl bg-purple-600 text-white font-semibold text-xs hover:bg-purple-500 shadow-md shadow-purple-500/20">
-                + Generate Full Backup Now
+            <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold text-xs transition-all shadow-sm">
+                <?= icon('plus', 'w-4 h-4') ?>
+                <span>Generate Full Backup Now</span>
             </button>
         </form>
     </div>
 
     <?php if ($error): ?>
-        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs">
-            <?= e($error) ?>
+        <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+            <?= icon('exclamation-circle', 'w-4 h-4 text-red-500 flex-shrink-0') ?>
+            <span><?= e($error) ?></span>
         </div>
     <?php endif; ?>
 
-    <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl shadow-xl">
+    <div class="bg-white border border-[#E4E4E7] rounded-2xl shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-[#F4F4F5] flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center">
+                    <?= icon('server', 'w-4 h-4') ?>
+                </div>
+                <h3 class="text-sm font-bold text-[#18181B]">Snapshot Archives</h3>
+            </div>
+            <span class="text-xs text-[#71717A]"><?= count($backupFiles) ?> files stored</span>
+        </div>
+
         <?php if (!empty($backupFiles)): ?>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="text-xs uppercase text-slate-400 border-b border-slate-800 pb-2">
+                <table class="w-full text-left text-sm text-[#18181B]">
+                    <thead class="text-xs uppercase text-[#71717A] bg-[#FAF5FF]/50 border-b border-[#E4E4E7]">
                         <tr>
-                            <th class="py-3 px-4">Backup Filename</th>
-                            <th class="py-3 px-4">File Size</th>
-                            <th class="py-3 px-4">Generated Date</th>
-                            <th class="py-3 px-4 text-right">Actions</th>
+                            <th class="py-3 px-5 font-semibold">Backup Filename</th>
+                            <th class="py-3 px-5 font-semibold">File Size</th>
+                            <th class="py-3 px-5 font-semibold">Generated Date</th>
+                            <th class="py-3 px-5 text-right font-semibold">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800/60 text-xs font-mono">
+                    <tbody class="divide-y divide-[#F4F4F5] text-xs">
                         <?php foreach ($backupFiles as $bf): ?>
-                            <tr class="hover:bg-slate-800/30">
-                                <td class="py-3 px-4 font-bold text-white"><?= e($bf['name']) ?></td>
-                                <td class="py-3 px-4 text-emerald-400"><?= e($bf['size']) ?></td>
-                                <td class="py-3 px-4 text-slate-400"><?= e($bf['time']) ?></td>
-                                <td class="py-3 px-4 text-right space-x-3">
-                                    <a href="/admin/backups.php?download=<?= urlencode($bf['name']) ?>" class="text-blue-400 hover:text-blue-300 font-sans font-semibold">
-                                        Download
+                            <tr class="hover:bg-[#FAF5FF]/30 transition-colors">
+                                <td class="py-3 px-5 font-mono font-medium text-[#18181B]"><?= e($bf['name']) ?></td>
+                                <td class="py-3 px-5 font-mono text-emerald-600 font-semibold"><?= e($bf['size']) ?></td>
+                                <td class="py-3 px-5 text-[#71717A] font-mono"><?= e($bf['time']) ?></td>
+                                <td class="py-3 px-5 text-right space-x-2">
+                                    <a href="/admin/backups.php?download=<?= urlencode($bf['name']) ?>" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FAF5FF] border border-[#DDD6FE] text-[#7C3AED] font-semibold text-xs hover:bg-[#F3E8FF] transition-all">
+                                        <?= icon('arrow-down-tray', 'w-3.5 h-3.5') ?>
+                                        <span>Download</span>
                                     </a>
                                     <form action="/admin/backups.php" method="POST" class="inline-block" onsubmit="return confirm('Permanently delete this backup archive?');">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="action" value="delete_backup">
                                         <input type="hidden" name="filename" value="<?= e($bf['name']) ?>">
-                                        <button type="submit" class="text-rose-400 hover:text-rose-300 font-sans font-semibold">
-                                            Delete
+                                        <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 border border-red-200 text-red-600 font-semibold text-xs hover:bg-red-100 transition-all">
+                                            <?= icon('trash', 'w-3.5 h-3.5') ?>
+                                            <span>Delete</span>
                                         </button>
                                     </form>
                                 </td>
@@ -161,8 +176,12 @@ require_once __DIR__ . '/includes/header.php';
                 </table>
             </div>
         <?php else: ?>
-            <div class="py-12 text-center text-xs text-slate-500">
-                No backup archives found. Click "Generate Full Backup Now" to create your first database snapshot.
+            <div class="py-16 text-center text-xs text-[#71717A] flex flex-col items-center justify-center gap-2">
+                <div class="w-12 h-12 rounded-full bg-[#FAF5FF] flex items-center justify-center text-[#A1A1AA]">
+                    <?= icon('server', 'w-6 h-6') ?>
+                </div>
+                <p class="font-medium text-[#18181B]">No backup archives found</p>
+                <p class="text-[11px]">Click "Generate Full Backup Now" above to create your first database snapshot.</p>
             </div>
         <?php endif; ?>
     </div>

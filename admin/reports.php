@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM Admin - Platform Analytics & Financial Reports
+ * White + Premium Purple Design System
  * Pure SQL aggregated reporting (Zero fabricated values).
  */
 
@@ -44,92 +45,137 @@ require_once __DIR__ . '/includes/header.php';
 
 <div class="space-y-8">
     <div>
-        <h1 class="text-2xl font-bold text-white tracking-tight">Platform Reports & Performance</h1>
-        <p class="text-xs text-slate-400 mt-1">Aggregated operational reports computed directly from MySQL database tables.</p>
+        <h1 class="text-2xl font-bold text-[#18181B] tracking-tight">Platform Reports & Performance</h1>
+        <p class="text-xs text-[#71717A] mt-1">Aggregated operational metrics computed directly from verified database records.</p>
     </div>
 
     <!-- Financial Ledger Summary -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
-            <span class="text-[11px] text-slate-400 uppercase tracking-wider block">Gross Verified Deposits</span>
-            <span class="text-2xl font-black font-mono text-emerald-400 mt-1 block"><?= format_currency($grossRevenue) ?></span>
+        <div class="p-6 rounded-2xl bg-white border border-[#E4E4E7] shadow-sm">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <?= icon('banknotes', 'w-4 h-4') ?>
+                </div>
+                <span class="text-xs font-semibold text-[#71717A]">Verified Deposits</span>
+            </div>
+            <span class="text-2xl font-bold font-mono text-emerald-600 block"><?= format_currency($grossRevenue) ?></span>
         </div>
-        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
-            <span class="text-[11px] text-slate-400 uppercase tracking-wider block">Delivered Order Volume</span>
-            <span class="text-2xl font-black font-mono text-blue-400 mt-1 block"><?= format_currency($totalOrderSpent) ?></span>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E4E4E7] shadow-sm">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                    <?= icon('shopping-cart', 'w-4 h-4') ?>
+                </div>
+                <span class="text-xs font-semibold text-[#71717A]">Order Volume</span>
+            </div>
+            <span class="text-2xl font-bold font-mono text-[#18181B] block"><?= format_currency($totalOrderSpent) ?></span>
         </div>
-        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
-            <span class="text-[11px] text-slate-400 uppercase tracking-wider block">Total Refunds Issued</span>
-            <span class="text-2xl font-black font-mono text-amber-400 mt-1 block"><?= format_currency($totalRefunds) ?></span>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E4E4E7] shadow-sm">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <?= icon('arrow-path', 'w-4 h-4') ?>
+                </div>
+                <span class="text-xs font-semibold text-[#71717A]">Total Refunds</span>
+            </div>
+            <span class="text-2xl font-bold font-mono text-amber-600 block"><?= format_currency($totalRefunds) ?></span>
         </div>
-        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
-            <span class="text-[11px] text-slate-400 uppercase tracking-wider block">Unspent User Balances</span>
-            <span class="text-2xl font-black font-mono text-purple-400 mt-1 block"><?= format_currency($totalUserBal) ?></span>
+
+        <div class="p-6 rounded-2xl bg-white border border-[#E4E4E7] shadow-sm">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center">
+                    <?= icon('wallet', 'w-4 h-4') ?>
+                </div>
+                <span class="text-xs font-semibold text-[#71717A]">User Balances</span>
+            </div>
+            <span class="text-2xl font-bold font-mono text-[#7C3AED] block"><?= format_currency($totalUserBal) ?></span>
         </div>
     </div>
 
     <!-- Top Performing Services -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl shadow-xl space-y-4">
-        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Top 5 Services By Order Volume</h3>
+    <div class="bg-white border border-[#E4E4E7] rounded-2xl shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-[#F4F4F5] flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-[#FAF5FF] text-[#7C3AED] flex items-center justify-center">
+                    <?= icon('fire', 'w-4 h-4') ?>
+                </div>
+                <h3 class="text-sm font-bold text-[#18181B]">Top Services By Order Volume</h3>
+            </div>
+        </div>
 
         <?php if (!empty($topServices)): ?>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="text-xs uppercase text-slate-400 border-b border-slate-800 pb-2">
+                <table class="w-full text-left text-sm text-[#18181B]">
+                    <thead class="text-xs uppercase text-[#71717A] bg-[#FAF5FF]/50 border-b border-[#E4E4E7]">
                         <tr>
-                            <th class="py-3 px-4">Service</th>
-                            <th class="py-3 px-4">Category</th>
-                            <th class="py-3 px-4 text-center">Orders Placed</th>
-                            <th class="py-3 px-4 text-right">Gross Charged</th>
+                            <th class="py-3 px-5 font-semibold">Service</th>
+                            <th class="py-3 px-5 font-semibold">Category</th>
+                            <th class="py-3 px-5 text-center font-semibold">Orders Placed</th>
+                            <th class="py-3 px-5 text-right font-semibold">Gross Charged</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800/60 text-xs">
+                    <tbody class="divide-y divide-[#F4F4F5] text-xs">
                         <?php foreach ($topServices as $ts): ?>
-                            <tr class="hover:bg-slate-800/30">
-                                <td class="py-3 px-4 font-bold text-white"><?= e($ts['name']) ?></td>
-                                <td class="py-3 px-4 text-slate-400"><?= e($ts['category_name'] ?? 'General') ?></td>
-                                <td class="py-3 px-4 text-center font-mono font-bold text-purple-400"><?= number_format($ts['order_count']) ?></td>
-                                <td class="py-3 px-4 text-right font-mono font-bold text-emerald-400"><?= format_currency($ts['gross_charge']) ?></td>
+                            <tr class="hover:bg-[#FAF5FF]/30 transition-colors">
+                                <td class="py-3.5 px-5 font-bold text-[#18181B]"><?= e($ts['name']) ?></td>
+                                <td class="py-3.5 px-5 text-[#71717A]"><?= e($ts['category_name'] ?? 'General') ?></td>
+                                <td class="py-3.5 px-5 text-center font-mono font-bold text-[#7C3AED]"><?= number_format($ts['order_count']) ?></td>
+                                <td class="py-3.5 px-5 text-right font-mono font-bold text-emerald-600"><?= format_currency($ts['gross_charge']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         <?php else: ?>
-            <div class="py-8 text-center text-xs text-slate-500">
-                No orders completed yet. Top services report will populate once orders are executed.
+            <div class="py-16 text-center text-xs text-[#71717A] flex flex-col items-center justify-center gap-2">
+                <div class="w-12 h-12 rounded-full bg-[#FAF5FF] flex items-center justify-center text-[#A1A1AA]">
+                    <?= icon('chart-bar', 'w-6 h-6') ?>
+                </div>
+                <p class="font-medium text-[#18181B]">No service volume data yet</p>
+                <p class="text-[11px]">Rankings will automatically calculate as clients place orders.</p>
             </div>
         <?php endif; ?>
     </div>
 
     <!-- Monthly Order Statistics -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl shadow-xl space-y-4">
-        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Monthly Performance Breakdown</h3>
+    <div class="bg-white border border-[#E4E4E7] rounded-2xl shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-[#F4F4F5] flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-[#FAF5FF] text-[#7C3AED] flex items-center justify-center">
+                    <?= icon('calendar', 'w-4 h-4') ?>
+                </div>
+                <h3 class="text-sm font-bold text-[#18181B]">Monthly Performance Breakdown</h3>
+            </div>
+        </div>
 
         <?php if (!empty($monthlyOrders)): ?>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="text-xs uppercase text-slate-400 border-b border-slate-800 pb-2">
+                <table class="w-full text-left text-sm text-[#18181B]">
+                    <thead class="text-xs uppercase text-[#71717A] bg-[#FAF5FF]/50 border-b border-[#E4E4E7]">
                         <tr>
-                            <th class="py-3 px-4">Month</th>
-                            <th class="py-3 px-4 text-center">Orders Processed</th>
-                            <th class="py-3 px-4 text-right">Total Charged</th>
+                            <th class="py-3 px-5 font-semibold">Month</th>
+                            <th class="py-3 px-5 text-center font-semibold">Orders Processed</th>
+                            <th class="py-3 px-5 text-right font-semibold">Total Charged</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800/60 text-xs">
+                    <tbody class="divide-y divide-[#F4F4F5] text-xs">
                         <?php foreach ($monthlyOrders as $mo): ?>
-                            <tr class="hover:bg-slate-800/30">
-                                <td class="py-3 px-4 font-mono font-bold text-white"><?= e($mo['order_month']) ?></td>
-                                <td class="py-3 px-4 text-center font-mono"><?= number_format($mo['count']) ?></td>
-                                <td class="py-3 px-4 text-right font-mono font-bold text-emerald-400"><?= format_currency($mo['revenue']) ?></td>
+                            <tr class="hover:bg-[#FAF5FF]/30 transition-colors">
+                                <td class="py-3.5 px-5 font-mono font-bold text-[#18181B]"><?= e($mo['order_month']) ?></td>
+                                <td class="py-3.5 px-5 text-center font-mono font-medium"><?= number_format($mo['count']) ?></td>
+                                <td class="py-3.5 px-5 text-right font-mono font-bold text-emerald-600"><?= format_currency($mo['revenue']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         <?php else: ?>
-            <div class="py-8 text-center text-xs text-slate-500">
-                No monthly order history available.
+            <div class="py-16 text-center text-xs text-[#71717A] flex flex-col items-center justify-center gap-2">
+                <div class="w-12 h-12 rounded-full bg-[#FAF5FF] flex items-center justify-center text-[#A1A1AA]">
+                    <?= icon('calendar', 'w-6 h-6') ?>
+                </div>
+                <p class="font-medium text-[#18181B]">No monthly order history available</p>
+                <p class="text-[11px]">Monthly aggregations will appear as order history builds up.</p>
             </div>
         <?php endif; ?>
     </div>

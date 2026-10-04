@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM Admin - Add New Provider
+ * White + Premium Purple Design System
  */
 
 require_once __DIR__ . '/../includes/config.php';
@@ -43,52 +44,56 @@ require_once __DIR__ . '/includes/header.php';
 
 <div class="max-w-2xl mx-auto space-y-6">
     <div>
-        <div class="text-xs text-slate-400 mb-1">
-            <a href="/admin/providers.php" class="hover:text-white">&larr; Back to Providers</a>
-        </div>
-        <h1 class="text-2xl font-bold text-white tracking-tight">Configure API Provider</h1>
+        <a href="/admin/providers.php" class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7C3AED] hover:text-[#6D28D9] mb-2 transition-colors">
+            <?= icon('arrow-left', 'w-3.5 h-3.5') ?>
+            <span>Back to Providers</span>
+        </a>
+        <h1 class="text-2xl font-bold text-[#18181B] tracking-tight">Configure API Provider</h1>
+        <p class="text-xs text-[#71717A] mt-1">Connect an external SMM provider to import services and route automated orders.</p>
     </div>
 
     <?php if ($error): ?>
-        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs">
-            <?= e($error) ?>
+        <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+            <?= icon('exclamation-circle', 'w-4 h-4 text-red-500 flex-shrink-0') ?>
+            <span><?= e($error) ?></span>
         </div>
     <?php endif; ?>
 
-    <form action="/admin/provider-add.php" method="POST" class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-4">
+    <form action="/admin/provider-add.php" method="POST" class="bg-white border border-[#E4E4E7] rounded-2xl p-6 sm:p-8 shadow-sm space-y-4">
         <?= csrf_field() ?>
 
         <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Provider Label / Name</label>
+            <label class="block text-xs font-semibold text-[#18181B] mb-1.5">Provider Label / Name</label>
             <input type="text" name="name" required placeholder="e.g. SMMDistributor Global"
-                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white">
+                class="w-full bg-[#FAF5FF]/30 border border-[#E4E4E7] rounded-xl px-3.5 py-2.5 text-xs text-[#18181B] focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 focus:outline-none transition-all placeholder:text-[#A1A1AA]">
         </div>
 
         <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">API Endpoint URL</label>
+            <label class="block text-xs font-semibold text-[#18181B] mb-1.5">API Endpoint URL</label>
             <input type="url" name="api_url" required placeholder="https://providerdomain.com/api/v2"
-                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white font-mono">
-            <span class="text-[11px] text-slate-500 mt-1 block">Must point to the standard SMM API endpoint.</span>
+                class="w-full bg-[#FAF5FF]/30 border border-[#E4E4E7] rounded-xl px-3.5 py-2.5 text-xs text-[#18181B] font-mono focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 focus:outline-none transition-all placeholder:text-[#A1A1AA]">
+            <span class="text-[11px] text-[#71717A] mt-1 block">Must point to standard SMM v2 POST endpoint.</span>
         </div>
 
         <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Provider Secret API Key</label>
-            <input type="password" name="api_key" required placeholder="••••••••••••••••••••••••"
-                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white font-mono">
+            <label class="block text-xs font-semibold text-[#18181B] mb-1.5">Provider Secret API Key</label>
+            <input type="password" name="api_key" required placeholder="Paste secret API token"
+                class="w-full bg-[#FAF5FF]/30 border border-[#E4E4E7] rounded-xl px-3.5 py-2.5 text-xs text-[#18181B] font-mono focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 focus:outline-none transition-all placeholder:text-[#A1A1AA]">
         </div>
 
         <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Status</label>
-            <select name="status" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            <label class="block text-xs font-semibold text-[#18181B] mb-1.5">Status</label>
+            <select name="status" class="w-full bg-[#FAF5FF]/30 border border-[#E4E4E7] rounded-xl px-3 py-2.5 text-xs text-[#18181B] focus:border-[#7C3AED] focus:ring-2 focus:ring-[#7C3AED]/20 focus:outline-none transition-all">
                 <option value="active">Active (Available for routing)</option>
                 <option value="inactive">Inactive</option>
             </select>
         </div>
 
-        <div class="pt-4 flex justify-end space-x-3">
-            <a href="/admin/providers.php" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold">Cancel</a>
-            <button type="submit" class="px-6 py-2.5 rounded-xl bg-purple-600 text-white font-semibold text-xs hover:bg-purple-500 shadow-md shadow-purple-500/20">
-                Save & Connect &rarr;
+        <div class="pt-4 flex justify-end items-center gap-3">
+            <a href="/admin/providers.php" class="px-4 py-2.5 rounded-xl bg-white border border-[#E4E4E7] text-[#18181B] text-xs font-semibold hover:bg-[#FAF5FF] transition-all">Cancel</a>
+            <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold text-xs transition-all shadow-sm">
+                <?= icon('check', 'w-4 h-4') ?>
+                <span>Save & Connect</span>
             </button>
         </div>
     </form>

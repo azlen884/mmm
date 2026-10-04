@@ -26,6 +26,13 @@ if ($action === 'mark_read' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
+if ($action === 'mark_all' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_csrf();
+    NotificationManager::markAllAsRead($userId);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 $unread = NotificationManager::unreadCount($userId);
 $notifs = NotificationManager::getUserNotifications($userId, true, 5);
 

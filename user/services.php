@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM User - Services Catalog
+ * White + Premium Purple Design System
  */
 
 require_once __DIR__ . '/../includes/config.php';
@@ -25,20 +26,21 @@ require_once __DIR__ . '/includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-white tracking-tight">Services Directory</h1>
-            <p class="text-xs text-slate-400 mt-1">Live rates and ordering boundaries for all active services.</p>
+            <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">Services Directory</h1>
+            <p class="text-xs text-zinc-500 mt-1">Live rates and ordering boundaries for all active services.</p>
         </div>
-        <a href="/user/new-order.php" class="inline-flex items-center px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-semibold hover:bg-blue-500 transition-colors shadow-md shadow-blue-500/20">
-            + Place Order
+        <a href="/user/new-order.php" class="inline-flex items-center space-x-1.5 px-4 py-2.5 rounded-xl bg-purple-600 text-white text-xs font-semibold hover:bg-purple-700 transition-all shadow-xs shadow-purple-600/25">
+            <?= icon('plus', 'w-4 h-4') ?>
+            <span>Place Order</span>
         </a>
     </div>
 
     <!-- Filters & Search Toolbar -->
-    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 backdrop-blur-md">
-        <form method="GET" action="/user/services.php" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="bg-white border border-purple-100 rounded-2xl p-4 sm:p-5 shadow-xs">
+        <form method="GET" action="/user/services.php" class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Category</label>
-                <select name="category" onchange="this.form.submit()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500">
+                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Category</label>
+                <select name="category" onchange="this.form.submit()" class="w-full bg-white border border-zinc-200 rounded-xl px-3.5 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-colors">
                     <option value="">All Categories (<?= count($services) ?>)</option>
                     <?php foreach ($categories as $cat): ?>
                         <option value="<?= (int)$cat['id'] ?>" <?= $categoryId === (int)$cat['id'] ? 'selected' : '' ?>>
@@ -48,17 +50,23 @@ require_once __DIR__ . '/includes/header.php';
                 </select>
             </div>
 
-            <div class="sm:col-span-2 flex items-end gap-3">
-                <div class="flex-grow">
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Search</label>
-                    <input type="text" name="search" value="<?= e($search) ?>" placeholder="Search services..."
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500">
+            <div class="sm:col-span-2 flex items-end gap-2.5">
+                <div class="relative flex-grow">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Search Services</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
+                            <?= icon('search', 'w-4 h-4') ?>
+                        </div>
+                        <input type="text" name="search" value="<?= e($search) ?>" placeholder="Search by name or keyword..."
+                            class="w-full bg-white border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-colors">
+                    </div>
                 </div>
-                <button type="submit" class="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-medium text-xs hover:bg-blue-500 transition-colors shadow-md shadow-blue-500/20">
-                    Filter
+                <button type="submit" class="px-4 py-2 rounded-xl bg-purple-600 text-white font-semibold text-xs hover:bg-purple-700 transition-all shadow-xs shadow-purple-600/25 flex items-center space-x-1.5 cursor-pointer">
+                    <?= icon('search', 'w-3.5 h-3.5') ?>
+                    <span>Filter</span>
                 </button>
                 <?php if ($categoryId || $search !== ''): ?>
-                    <a href="/user/services.php" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white text-xs transition-colors">
+                    <a href="/user/services.php" class="px-3.5 py-2 rounded-xl bg-zinc-100 text-zinc-600 hover:bg-zinc-200 text-xs font-medium transition-colors">
                         Reset
                     </a>
                 <?php endif; ?>
@@ -68,56 +76,57 @@ require_once __DIR__ . '/includes/header.php';
 
     <!-- Table -->
     <?php if (!empty($services)): ?>
-        <div class="overflow-x-auto bg-slate-900/60 border border-slate-800/80 rounded-2xl backdrop-blur-md shadow-xl">
-            <table class="w-full text-left text-sm text-slate-300">
-                <thead class="bg-slate-950/80 text-xs uppercase text-slate-400 border-b border-slate-800">
+        <div class="overflow-x-auto bg-white border border-purple-100 rounded-2xl shadow-xs">
+            <table class="w-full text-left text-sm text-zinc-600">
+                <thead class="bg-zinc-50/70 text-xs uppercase font-bold text-zinc-400 border-b border-zinc-100">
                     <tr>
-                        <th class="px-5 py-4 w-16">ID</th>
-                        <th class="px-5 py-4">Service</th>
-                        <th class="px-5 py-4">Category</th>
-                        <th class="px-5 py-4 text-right">Rate / 1k</th>
-                        <th class="px-5 py-4 text-center">Min / Max</th>
-                        <th class="px-5 py-4 text-center">Features</th>
-                        <th class="px-5 py-4 text-center">Action</th>
+                        <th class="px-4 py-3.5 w-16">ID</th>
+                        <th class="px-4 py-3.5">Service</th>
+                        <th class="px-4 py-3.5">Category</th>
+                        <th class="px-4 py-3.5 text-right">Rate / 1k</th>
+                        <th class="px-4 py-3.5 text-center">Min / Max</th>
+                        <th class="px-4 py-3.5 text-center">Features</th>
+                        <th class="px-4 py-3.5 text-center">Action</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800/60">
+                <tbody class="divide-y divide-zinc-100">
                     <?php foreach ($services as $s): ?>
-                        <tr class="hover:bg-slate-800/30 transition-colors">
-                            <td class="px-5 py-4 font-mono text-xs text-slate-400">#<?= (int)$s['id'] ?></td>
-                            <td class="px-5 py-4 font-medium text-white max-w-sm">
+                        <tr class="hover:bg-purple-50/30 transition-colors">
+                            <td class="px-4 py-3.5 font-mono text-xs font-bold text-zinc-900">#<?= (int)$s['id'] ?></td>
+                            <td class="px-4 py-3.5 font-medium text-zinc-900 max-w-sm">
                                 <div><?= e($s['name']) ?></div>
                                 <?php if (!empty($s['description'])): ?>
-                                    <div class="text-xs text-slate-500 mt-1 line-clamp-1"><?= e($s['description']) ?></div>
+                                    <div class="text-xs text-zinc-400 mt-0.5 line-clamp-1"><?= e($s['description']) ?></div>
                                 <?php endif; ?>
                             </td>
-                            <td class="px-5 py-4 text-slate-400 whitespace-nowrap">
-                                <span class="px-2 py-0.5 rounded-md bg-slate-800 text-xs text-slate-300">
+                            <td class="px-4 py-3.5 text-zinc-600 whitespace-nowrap">
+                                <span class="px-2 py-0.5 rounded-md bg-purple-50 text-xs font-medium text-purple-700 border border-purple-100">
                                     <?= e($s['category_name'] ?? 'General') ?>
                                 </span>
                             </td>
-                            <td class="px-5 py-4 font-mono font-semibold text-emerald-400 text-right whitespace-nowrap">
-                                <?= format_currency($s['rate']) ?>
+                            <td class="px-4 py-3.5 font-mono font-bold text-purple-700 text-right whitespace-nowrap">
+                                <?= format_currency((float)$s['rate']) ?>
                             </td>
-                            <td class="px-5 py-4 text-xs text-center text-slate-400 whitespace-nowrap">
+                            <td class="px-4 py-3.5 text-xs font-mono text-center text-zinc-500 whitespace-nowrap">
                                 <?= number_format($s['min_quantity']) ?> / <?= number_format($s['max_quantity']) ?>
                             </td>
-                            <td class="px-5 py-4 text-center whitespace-nowrap">
+                            <td class="px-4 py-3.5 text-center whitespace-nowrap">
                                 <div class="flex items-center justify-center space-x-1">
                                     <?php if ($s['refill']): ?>
-                                        <span class="px-2 py-0.5 text-[11px] rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">Refill</span>
+                                        <span class="px-2 py-0.5 text-[11px] rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">Refill</span>
                                     <?php endif; ?>
                                     <?php if ($s['cancel']): ?>
-                                        <span class="px-2 py-0.5 text-[11px] rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-medium">Cancel</span>
+                                        <span class="px-2 py-0.5 text-[11px] rounded-md bg-blue-50 text-blue-700 border border-blue-200 font-semibold">Cancel</span>
                                     <?php endif; ?>
                                     <?php if ($s['dripfeed']): ?>
-                                        <span class="px-2 py-0.5 text-[11px] rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 font-medium">Drip-feed</span>
+                                        <span class="px-2 py-0.5 text-[11px] rounded-md bg-purple-50 text-purple-700 border border-purple-200 font-semibold">Drip</span>
                                     <?php endif; ?>
                                 </div>
                             </td>
-                            <td class="px-5 py-4 text-center whitespace-nowrap">
-                                <a href="/user/new-order.php" class="px-3.5 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-semibold hover:bg-blue-500 transition-all shadow-sm">
-                                    Order
+                            <td class="px-4 py-3.5 text-center whitespace-nowrap">
+                                <a href="/user/new-order.php" class="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-purple-600 text-white text-xs font-semibold hover:bg-purple-700 transition-all shadow-xs shadow-purple-600/20">
+                                    <?= icon('shopping-cart', 'w-3 h-3') ?>
+                                    <span>Order</span>
                                 </a>
                             </td>
                         </tr>
@@ -126,9 +135,12 @@ require_once __DIR__ . '/includes/header.php';
             </table>
         </div>
     <?php else: ?>
-        <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-16 text-center">
-            <h3 class="text-base font-bold text-white mb-1">No services available</h3>
-            <p class="text-xs text-slate-400">There are no active services in this category.</p>
+        <div class="bg-white border border-purple-100 rounded-3xl p-16 text-center shadow-xs">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mx-auto mb-3 text-purple-500">
+                <?= icon('inbox', 'w-6 h-6') ?>
+            </div>
+            <h3 class="text-base font-bold text-zinc-900 mb-1">No services found</h3>
+            <p class="text-xs text-zinc-500">No active services match your current filter.</p>
         </div>
     <?php endif; ?>
 </div>

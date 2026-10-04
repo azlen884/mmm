@@ -1,6 +1,7 @@
 <?php
 /**
  * ApexSMM Admin - Order Inspector & Status Adjuster
+ * White + Premium Purple Design System
  */
 
 require_once __DIR__ . '/../includes/config.php';
@@ -94,12 +95,15 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="max-w-3xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between gsap-fade-in">
         <div>
-            <div class="text-xs text-slate-400 mb-1">
-                <a href="/admin/orders.php" class="hover:text-white">&larr; Back to Orders</a>
+            <div class="text-xs text-zinc-500 mb-1">
+                <a href="/admin/orders.php" class="inline-flex items-center space-x-1 text-purple-700 hover:text-purple-800 font-medium">
+                    <?= icon('chevron-left', 'w-3.5 h-3.5') ?>
+                    <span>Back to Orders</span>
+                </a>
             </div>
-            <h1 class="text-2xl font-bold text-white tracking-tight">Order #<?= (int)$order['id'] ?></h1>
+            <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">Order #<?= (int)$order['id'] ?></h1>
         </div>
         <div>
             <?= status_badge($order['status']) ?>
@@ -107,89 +111,91 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 
     <?php if ($success): ?>
-        <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs">
-            <?= e($success) ?>
+        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center space-x-2">
+            <?= icon('check-circle', 'w-4 h-4 text-emerald-600 shrink-0') ?>
+            <span><?= e($success) ?></span>
         </div>
     <?php endif; ?>
 
     <?php if ($error): ?>
-        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs">
-            <?= e($error) ?>
+        <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center space-x-2">
+            <?= icon('exclamation-circle', 'w-4 h-4 text-rose-600 shrink-0') ?>
+            <span><?= e($error) ?></span>
         </div>
     <?php endif; ?>
 
     <!-- Overview Card -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-xl space-y-5">
+    <div class="bg-white border border-zinc-200/80 rounded-2xl p-6 sm:p-7 shadow-xs space-y-5 gsap-card">
         <div>
-            <span class="text-xs text-slate-400 uppercase tracking-wider">Service</span>
-            <div class="text-base font-bold text-white mt-0.5"><?= e($order['service_name'] ?? 'Manual Service') ?></div>
-            <div class="text-xs text-slate-500 mt-1">
-                Client: <a href="/admin/user-view.php?id=<?= (int)$order['user_id'] ?>" class="text-purple-400 font-bold hover:underline"><?= e($order['username']) ?></a> (<?= e($order['email']) ?>)
+            <span class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Service</span>
+            <div class="text-base font-bold text-zinc-900 mt-0.5"><?= e($order['service_name'] ?? 'Manual Service') ?></div>
+            <div class="text-xs text-zinc-500 mt-1">
+                Client: <a href="/admin/user-view.php?id=<?= (int)$order['user_id'] ?>" class="text-purple-700 font-bold hover:underline"><?= e($order['username']) ?></a> (<?= e($order['email']) ?>)
             </div>
         </div>
 
-        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800">
-            <span class="text-xs text-slate-400 uppercase tracking-wider block mb-1">Target URL</span>
-            <a href="<?= e($order['link']) ?>" target="_blank" class="text-xs font-mono text-blue-400 hover:text-blue-300 break-all underline">
+        <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200">
+            <span class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider block mb-1">Target URL</span>
+            <a href="<?= e($order['link']) ?>" target="_blank" class="text-xs font-mono text-purple-700 hover:text-purple-800 break-all underline">
                 <?= e($order['link']) ?>
             </a>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <span class="text-[10px] text-slate-500 uppercase block">Quantity</span>
-                <span class="text-sm font-mono font-bold text-white mt-1 block"><?= number_format($order['quantity']) ?></span>
+            <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200">
+                <span class="text-[10px] font-semibold text-zinc-500 uppercase block">Quantity</span>
+                <span class="text-sm font-mono font-bold text-zinc-900 mt-1 block"><?= number_format($order['quantity']) ?></span>
             </div>
-            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <span class="text-[10px] text-slate-500 uppercase block">User Charge</span>
-                <span class="text-sm font-mono font-bold text-emerald-400 mt-1 block"><?= format_currency($order['charge']) ?></span>
+            <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200">
+                <span class="text-[10px] font-semibold text-zinc-500 uppercase block">User Charge</span>
+                <span class="text-sm font-mono font-bold text-purple-700 mt-1 block"><?= format_currency($order['charge']) ?></span>
             </div>
-            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <span class="text-[10px] text-slate-500 uppercase block">Start Count</span>
-                <span class="text-sm font-mono font-bold text-slate-300 mt-1 block"><?= number_format($order['start_count']) ?></span>
+            <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200">
+                <span class="text-[10px] font-semibold text-zinc-500 uppercase block">Start Count</span>
+                <span class="text-sm font-mono font-bold text-zinc-700 mt-1 block"><?= number_format($order['start_count']) ?></span>
             </div>
-            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <span class="text-[10px] text-slate-500 uppercase block">Remains</span>
-                <span class="text-sm font-mono font-bold text-slate-300 mt-1 block"><?= number_format($order['remains']) ?></span>
+            <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200">
+                <span class="text-[10px] font-semibold text-zinc-500 uppercase block">Remains</span>
+                <span class="text-sm font-mono font-bold text-zinc-700 mt-1 block"><?= number_format($order['remains']) ?></span>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-400 pt-2 border-t border-slate-800">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-zinc-500 pt-3 border-t border-zinc-100">
             <div>
-                <span class="text-slate-500">Provider:</span>
-                <span class="text-slate-200 ml-1"><?= e($order['provider_name'] ?? 'Manual Processing') ?></span>
+                <span class="font-medium">Provider:</span>
+                <span class="text-zinc-900 ml-1"><?= e($order['provider_name'] ?? 'Manual Processing') ?></span>
                 <?php if ($order['provider_order_id']): ?>
-                    <span class="font-mono text-purple-400 ml-1">[#<?= e($order['provider_order_id']) ?>]</span>
+                    <span class="font-mono text-purple-700 ml-1 font-semibold">[#<?= e($order['provider_order_id']) ?>]</span>
                 <?php endif; ?>
             </div>
             <div>
-                <span class="text-slate-500">Submitted:</span>
-                <span class="text-slate-200 ml-1"><?= format_date($order['created_at']) ?></span>
+                <span class="font-medium">Submitted:</span>
+                <span class="text-zinc-700 ml-1"><?= format_date($order['created_at']) ?></span>
             </div>
         </div>
 
         <?php if (!empty($order['provider_response'])): ?>
-            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] font-mono text-slate-400 overflow-x-auto">
-                <span class="text-slate-500 uppercase block mb-1">Provider Raw Response:</span>
+            <div class="p-3 rounded-xl bg-zinc-50 border border-zinc-200 text-[11px] font-mono text-zinc-600 overflow-x-auto">
+                <span class="text-zinc-500 uppercase block mb-1 font-bold">Provider Raw Response:</span>
                 <?= e($order['provider_response']) ?>
             </div>
         <?php endif; ?>
     </div>
 
     <!-- Administrative Controls -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 gsap-card">
         
         <!-- Status Adjuster -->
-        <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl space-y-4">
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Update Order Status</h3>
+        <div class="bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-xs space-y-4">
+            <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider">Update Order Status</h3>
 
             <form action="/admin/order-view.php?id=<?= (int)$order['id'] ?>" method="POST" class="space-y-3">
                 <?= csrf_field() ?>
                 <input type="hidden" name="action" value="update_status">
 
                 <div>
-                    <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Status</label>
-                    <select name="status" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+                    <label class="block text-[11px] font-semibold uppercase text-zinc-600 mb-1">Status</label>
+                    <select name="status" class="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
                         <?php 
                         $allStatuses = ['pending', 'processing', 'in_progress', 'completed', 'partial', 'cancelled', 'refunded', 'failed'];
                         foreach ($allStatuses as $st):
@@ -203,32 +209,34 @@ require_once __DIR__ . '/includes/header.php';
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Start Count</label>
-                        <input type="number" name="start_count" value="<?= (int)$order['start_count'] ?>" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                        <label class="block text-[11px] font-semibold uppercase text-zinc-600 mb-1">Start Count</label>
+                        <input type="number" name="start_count" value="<?= (int)$order['start_count'] ?>" class="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 font-mono focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold uppercase text-slate-400 mb-1">Remains</label>
-                        <input type="number" name="remains" value="<?= (int)$order['remains'] ?>" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
+                        <label class="block text-[11px] font-semibold uppercase text-zinc-600 mb-1">Remains</label>
+                        <input type="number" name="remains" value="<?= (int)$order['remains'] ?>" class="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs text-zinc-900 font-mono focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-2 rounded-xl bg-purple-600 text-white font-semibold text-xs hover:bg-purple-500 shadow-md shadow-purple-500/20">
-                    Apply Status Update
+                <button type="submit" class="w-full inline-flex items-center justify-center space-x-1.5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs shadow-xs transition-colors">
+                    <?= icon('check', 'w-3.5 h-3.5') ?>
+                    <span>Apply Status Update</span>
                 </button>
             </form>
         </div>
 
         <!-- Quick Actions & Refund -->
-        <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl space-y-4">
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Financial & API Actions</h3>
+        <div class="bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-xs space-y-4">
+            <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider">Financial & API Actions</h3>
 
             <div class="space-y-3">
                 <form action="/admin/order-view.php?id=<?= (int)$order['id'] ?>" method="POST" onsubmit="return confirm('Refund full order charge to user wallet?');">
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="refund_order">
                     <button type="submit" <?= $order['status'] === 'refunded' ? 'disabled' : '' ?> 
-                            class="w-full py-2.5 rounded-xl bg-rose-600/15 border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-600 hover:text-white transition-all disabled:opacity-50">
-                        Refund Full Amount (<?= format_currency($order['charge']) ?>)
+                            class="w-full inline-flex items-center justify-center space-x-1.5 py-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold hover:bg-rose-100 transition-all disabled:opacity-50 shadow-2xs">
+                        <?= icon('arrow-path', 'w-3.5 h-3.5 text-rose-600') ?>
+                        <span>Refund Full Amount (<?= format_currency($order['charge']) ?>)</span>
                     </button>
                 </form>
 
@@ -236,8 +244,9 @@ require_once __DIR__ . '/includes/header.php';
                     <form action="/admin/order-view.php?id=<?= (int)$order['id'] ?>" method="POST">
                         <?= csrf_field() ?>
                         <input type="hidden" name="action" value="redispatch">
-                        <button type="submit" class="w-full py-2.5 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-400 text-xs font-semibold hover:bg-blue-600 hover:text-white transition-all">
-                            Re-send to Provider API
+                        <button type="submit" class="w-full inline-flex items-center justify-center space-x-1.5 py-2.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 text-xs font-semibold hover:bg-purple-100/80 transition-all shadow-2xs">
+                            <?= icon('bolt', 'w-3.5 h-3.5 text-purple-600') ?>
+                            <span>Re-send to Provider API</span>
                         </button>
                     </form>
                 <?php endif; ?>

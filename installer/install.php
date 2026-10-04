@@ -176,43 +176,46 @@ EOT;
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ApexSMM Installation Status</title>
+    <link rel="stylesheet" href="/dist/style.css">
     <link rel="stylesheet" href="/assets/css/app.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex items-center justify-center p-4 antialiased selection:bg-blue-600 selection:text-white">
-    <div class="w-full max-w-lg bg-slate-900/90 border border-slate-800 rounded-2xl shadow-2xl p-8 backdrop-blur-xl text-center">
+<body class="bg-[#FAF5FF] text-[#18181B] min-h-screen flex items-center justify-center p-4 antialiased selection:bg-[#7C3AED] selection:text-white font-sans">
+    <div class="w-full max-w-lg bg-white border border-[#E4E4E7] rounded-3xl shadow-xl shadow-purple-900/5 p-8 sm:p-10 text-center">
         <?php if (!empty($success)): ?>
-            <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
-                &check;
+            <div class="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
             </div>
-            <h2 class="text-2xl font-bold text-white mb-2">Installation Complete!</h2>
-            <p class="text-sm text-slate-300 mb-6">
-                ApexSMM has been initialized successfully. The database schema, administrator account, and payment gateways are ready.
+            <h2 class="text-2xl font-bold text-[#18181B] mb-2 tracking-tight">Installation Complete!</h2>
+            <p class="text-xs sm:text-sm text-[#71717A] mb-6 leading-relaxed">
+                ApexSMM has been initialized successfully. The database schema, administrator account, and payment gateways are active.
             </p>
-            <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4 text-left text-xs space-y-1.5 mb-6 font-mono text-slate-300">
-                <div><span class="text-slate-500">Admin Username:</span> <?= htmlspecialchars($adminUser ?? 'admin') ?></div>
-                <div><span class="text-slate-500">Admin Portal:</span> <a href="/admin/login.php" class="text-blue-400 hover:underline">/admin/login.php</a></div>
-                <div><span class="text-slate-500">User Portal:</span> <a href="/login.php" class="text-blue-400 hover:underline">/login.php</a></div>
-                <div><span class="text-slate-500">Demo User:</span> demo / DemoUser123! ($150 balance)</div>
+            <div class="bg-[#FAF5FF]/50 border border-[#E4E4E7] rounded-xl p-4 text-left text-xs space-y-2 mb-6 font-mono text-[#18181B]">
+                <div><span class="text-[#71717A]">Admin Username:</span> <strong class="text-[#7C3AED]"><?= htmlspecialchars($adminUser ?? 'admin') ?></strong></div>
+                <div><span class="text-[#71717A]">Admin Portal:</span> <a href="/admin/login.php" class="text-[#7C3AED] hover:underline font-semibold">/admin/login.php</a></div>
+                <div><span class="text-[#71717A]">User Portal:</span> <a href="/login.php" class="text-[#7C3AED] hover:underline font-semibold">/login.php</a></div>
+                <div><span class="text-[#71717A]">Demo Client:</span> demo / DemoUser123! ($150 balance)</div>
             </div>
-            <a href="/login.php" class="inline-flex items-center justify-center px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium hover:from-blue-500 hover:to-indigo-500 transition-all shadow-lg shadow-blue-500/25">
-                Go to Sign In &rarr;
+            <a href="/login.php" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold text-xs transition-all shadow-sm">
+                <span>Go to Client Sign In</span>
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
             </a>
         <?php else: ?>
-            <div class="w-16 h-16 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
-                &cross;
+            <div class="w-16 h-16 rounded-2xl bg-red-50 border border-red-200 text-red-600 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
             </div>
-            <h2 class="text-2xl font-bold text-white mb-2">Installation Encountered an Error</h2>
-            <div class="bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-xl p-4 text-sm mb-6 text-left break-words">
+            <h2 class="text-2xl font-bold text-[#18181B] mb-2 tracking-tight">Installation Encountered an Error</h2>
+            <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 text-xs mb-6 text-left break-words">
                 <?= htmlspecialchars($error ?? 'An unexpected error occurred.') ?>
             </div>
-            <a href="/installer/database.php?unlock=1" class="inline-flex items-center justify-center px-6 py-2.5 rounded-xl bg-slate-800 text-slate-200 font-medium hover:bg-slate-700 transition-all">
-                &larr; Try Again
+            <a href="/installer/database.php?unlock=1" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-white border border-[#E4E4E7] text-[#18181B] font-semibold text-xs hover:bg-[#FAF5FF] transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                <span>Try Again</span>
             </a>
         <?php endif; ?>
     </div>
